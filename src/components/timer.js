@@ -7,10 +7,21 @@ class Timer extends React.Component {
         this.state = {
             timerOn: false,
             timerStart: this.props.startTime,
-            timeLeft: this.props.startTime //change
+            timeLeft: 0
         };
     }
 
+    calTimeLeft(totalMin){
+        let totalTime = totalMin * (1000 * 60)
+        let now = Date.now();
+        let passed = now - this.state.timerStart;
+        let left = totalTime - passed;
+        this.setState({timeLeft: left})
+    }
+
+    componentDidMount() {
+        this.interval = setInterval(() => this.calTimeLeft(25), 1000);
+    }
 
     render() {
         return (
