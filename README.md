@@ -5,16 +5,15 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ### Materialize 
 
-The [Materialze](https://materializecss.com/buttons.html) framework was used to create css for this app.
+The [Materialze](https://materializecss.com/buttons.html) framework was used to create css for this app.<br />
 
+Note: In this case I coppied the entire materialze css file (un-minimized) into the application for ease of use and to save time.  In a production application I'd look further into react-materialize tools.
 
 ## Launch App locally
 
-Run 'npm start' from terminal
+Run 'npm start' from terminal. <br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
 
 
 ## Run `yarn build` to prepare for production
