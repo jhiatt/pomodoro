@@ -3,6 +3,11 @@ import React from 'react';
 
 class Task extends React.Component {
 
+    handleClick(event) {
+        let time = Date.now()
+        this.props.timerCall(time)
+    }
+
     render() {
         return (
             <div className="row">

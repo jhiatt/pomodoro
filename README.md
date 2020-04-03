@@ -14,11 +14,16 @@ The [Materialze](https://materializecss.com/buttons.html) framework was used to 
 
 Note: In this case I coppied the entire materialze css file (un-minimized) into the application for ease of use and to save time.  In a production application I'd look further into react-materialize tools.
 
+## Other resources
+
 ### Stopwatch tutorial
 
 [https://medium.com/@peterjd42/building-timers-in-react-stopwatch-and-countdown-bc06486560a2](https://medium.com/@peterjd42/building-timers-in-react-stopwatch-and-countdown-bc06486560a2) <br />
 
 I used this mostly to confirm the state set up I was planning to use.
+
+### React Documentation
+https://reactjs.org/docs/lifting-state-up.html
 
 ## Launch App locally
 

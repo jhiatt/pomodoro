@@ -2,6 +2,16 @@ import React from 'react';
 import Task from './task';
 
 class TaskList extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick(event) {
+        let time = Date.now()
+        this.props.timerCall(time)
+        console.log(Date(time))
+    }
 
     render() {
         return (
@@ -17,7 +27,7 @@ class TaskList extends React.Component {
                                 I am convenient because I require little markup to use effectively.</p>
                             </div>
                             <div className="card-action">
-                                <a className="waves-effect waves-light btn">Add</a>
+                                <a className="waves-effect waves-light btn" onClick={this.handleClick}>Add</a>
                             </div>
                         </div>
                     </div>
