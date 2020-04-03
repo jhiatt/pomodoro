@@ -5,18 +5,22 @@ class TaskList extends React.Component {
     constructor(props) {
         super(props);
         this.handleClick = this.handleClick.bind(this);
+        this.tasklistTimerCall = this.tasklistTimerCall.bind(this);
+    }
+
+    tasklistTimerCall(time){
+        this.props.timerCall(time)
     }
 
     handleClick(event) {
         let time = Date.now()
-        this.props.timerCall(time)
         console.log(Date(time))
     }
 
     render() {
         return (
             <React.Fragment>
-                <Task />
+                <Task timerCall2={this.tasklistTimerCall}/>
                 <div className="row">
                     <div className="col s12 m6 offset-m3">
 
