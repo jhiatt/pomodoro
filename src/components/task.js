@@ -1,16 +1,21 @@
 import React from 'react';
-// import 'materialize-css';
-// import { Button } from 'react-materialize';
-// import '../../node_modules/materialize-css/sass/materialize.scss';
-
 
 
 class Task extends React.Component {
 
     render() {
         return (
-            // <Button>Button</Button>        
-            <a className="waves-effect waves-light btn">button</a>
+            <div className="row">
+                <div className="card">
+                    <div className="card-content grey-text text-darken-4">
+                        <p>I am a very simple card. I am good at containing small bits of information.
+                        I am convenient because I require little markup to use effectively.</p>
+                    </div>
+                    <div className="card-action">
+                        <a className="waves-effect waves-light btn">button</a>
+                    </div>
+                </div>
+            </div>
         )
     }
 }
