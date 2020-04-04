@@ -16,11 +16,11 @@ Note: In this case I coppied the entire materialze css file (un-minimized) into 
 
 ## Other resources
 
-### Stopwatch tutorial
+### Stopwatch tutorials
 
 [https://medium.com/@peterjd42/building-timers-in-react-stopwatch-and-countdown-bc06486560a2](https://medium.com/@peterjd42/building-timers-in-react-stopwatch-and-countdown-bc06486560a2) <br />
 
-I used this mostly to confirm the state set up I was planning to use.
+[https://medium.com/@marjuhirsh/a-beginners-account-of-building-a-pomodoro-clock-in-react-2d03f856b28a](https://medium.com/@marjuhirsh/a-beginners-account-of-building-a-pomodoro-clock-in-react-2d03f856b28a)
 
 ### React Documentation
 https://reactjs.org/docs/lifting-state-up.html
