@@ -5,17 +5,23 @@ class Timer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            timerOn: true, //change this to false
-            timerStart: this.props.startTime,
-            timeLeft: .5 * 60000,
-            timeDisplay: "",
+            timerOn: this.props.timerOn, //should be false?
+            timerStart: 0,
+            timeLeft: .1 * 60000, //change from .1 to 25
+            timeDisplay: "25 : 00",
             breakOn: false,
             breakTimeLeft: 5 * 60000,
-            breakTimeDisplay: "5 : 00"
+            breakTimeDisplay: "5 : 00",
+            compId: '',
+            timerFinished: false,
+            clockRunning: false,
+            interval: ''
         };
         this.calTimeLeft = this.calTimeLeft.bind(this);
         this.timeUpdate = this.timeUpdate.bind(this);
         this.formatClock = this.formatClock.bind(this);
+        this.finishedHandleClick = this.finishedHandleClick.bind(this);
+        this.notFinHandleClick = this.notFinHandleClick.bind(this);
     }
 
     calTimeLeft(totalMin){
@@ -31,10 +37,13 @@ class Timer extends React.Component {
         // console.log(left)
         // this.setState({timeLeft: left})
         // console.log(this.state.timeLeft)
-        this.interval = setInterval(() => this.timeUpdate(), 1000)
+        // le interval = setInterval(() => this.timeUpdate(), 1000)
+        // this.setState({interval: i})
     }
 
     timeUpdate(){
+        console.log("-1")
+        // console.log(this.state.breakOn)
         if (this.state.timerOn) {
             const newTime = this.state.timeLeft - 1000;
             if (newTime >= 0) {
@@ -42,24 +51,24 @@ class Timer extends React.Component {
                     timeLeft: newTime
                 });
             } else {
-                clearInterval(this.timeUpdate);
-                this.setState({ timerOn: false, breakOn: true });
-                this.interval = setInterval(() => this.timeUpdate(), 1000)
+                clearInterval(this.state.interval);
+                this.setState({ timerFinished: true, clockRunning: false });
             }
             this.formatClock(this.state.timeLeft, false);
         } else if (this.state.breakOn) {
-            const newTime = this.state.timeLeft - 1000;
+            console.log("3")
+            const newTime = this.state.breakTimeLeft - 1000;
             if (newTime >= 0) {
                 this.setState({
                     breakTimeLeft: newTime
                 });
             } else {
-                clearInterval(this.timeUpdate);
-                this.setState({ timerOn: false, breakOn: true });
+                clearInterval(this.state.interval);
+                this.setState({ breakOn: false, clockRunning: false });
             }
             this.formatClock(this.state.breakTimeLeft, true);
         }
-    }
+    };
 
     formatClock(time, isBreak) {
         let realTime = time / 1000;
@@ -71,25 +80,86 @@ class Timer extends React.Component {
         } else {
             this.setState({timeDisplay: `${minutes} : ${seconds}`})
         }
-    }
+    };
+
+    //handles and lifecycle
+    finishedHandleClick(event) {
+        console.log("1")
+        this.props.compCall(this.props.id);
+        if (!this.state.clockRunning) {
+            this.setState({ timerOn: false, breakOn: true, clockRunning: true });
+            let i = setInterval(() => this.timeUpdate(), 1000);
+            this.setState({interval: i})
+            console.log("!!!!!!!!!!!!!!!!")
+        }
+    };
+
+    notFinHandleClick(event) {
+        console.log("2")
+        if (!this.state.clockRunning) {
+            this.setState({ timerOn: false, breakOn: true, clockRunning: true });
+            let i = setInterval(() => this.timeUpdate(), 1000);
+            this.setState({interval: i})
+        }
+    };
 
     componentDidMount() {
         this.calTimeLeft(25);
-    }
+    };
+
+    componentDidUpdate() {
+        if (!this.state.timerOn && !this.state.clockRunning) {
+            if (this.props.timerOn) {
+                this.setState({timerOn: this.props.timerOn});
+                let i = setInterval(() => this.timeUpdate(), 1000)
+                this.setState({interval: i})
+            };
+        };
+    };
 
     render() {
-        return (
+        let question
+        if (this.state.timerFinished) {
+            question = 
+                <div>
+                    <p>Did you finish?</p>
+                    <span className="card-action">
+                        <span className="waves-effect waves-light btn" onClick={this.finishedHandleClick}>Yes</span>
+                    </span>
+                    <span className="card-action">
+                        <span className="waves-effect waves-light btn" onClick={this.notFinHandleClick}>No</span>
+                    </span>
+                </div>
+        };
 
-            <div className="row">
-                <div className="col s12 m6">
-                    <div id="timer" className="card blue-grey lighten-3">
-                        <div className="card-content grey-text text-darken-4">
-                            <span className="card-title">Current Task: {this.state.timeDisplay}</span>
-                            <p>Break: {this.state.breakTimeDisplay} </p>
+        let timer
+        if (this.state.timerOn){
+            timer =  <p>{this.state.timeDisplay}</p>
+        } else if (this.state.breakOn) {
+            timer = <p>{this.state.breakTimeDisplay} </p>
+        }
+
+        let main
+        if (this.state.timerOn || this.state.breakOn) {
+            main = 
+                <div className="row">
+                    <div className="col s12 m6">
+                        <div id="timer" className="card blue-grey lighten-3">
+                            <div className="card-content grey-text text-darken-4">
+                                <span className="card-title">Current Task: {this.props.description}</span>
+                                {question}
+                                {timer}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+
+        }
+
+        return (
+            <React.Fragment>
+                {main}
+            </React.Fragment>
         )
     }
 }
