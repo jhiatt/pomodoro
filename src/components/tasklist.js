@@ -45,6 +45,7 @@ class TaskList extends React.Component {
                 timerCall2={this.tasklistTimerCall}
                 compId={this.props.compId} />
         );
+        console.log("2: " + this.props.compId)
 
         return (
             <React.Fragment>

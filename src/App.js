@@ -26,6 +26,7 @@ class App extends React.Component {
   };
 
   completeCallback = (t) => {
+    console.log("1: " + t)
     this.setState({completedId: t});
   }
 

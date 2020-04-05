@@ -18,7 +18,7 @@ class Task extends React.Component {
     }
 
     componentDidUpdate() {
-        if (this.props.id === this.props.compId) {
+        if (this.props.id === this.props.compId && this.state.status !== "Complete") {
             this.setState({status: "Complete"})
         }
     }
