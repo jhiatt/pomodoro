@@ -7,13 +7,15 @@ class Timer extends React.Component {
         this.state = {
             timerOn: this.props.timerOn, //should be false?
             timerStart: 0,
-            timeLeft: .5 * 60000, //change from .5 to 25
+            timeLeft: .1 * 60000, //change from .1 to 25
             timeDisplay: "25 : 00",
             breakOn: false,
             breakTimeLeft: 5 * 60000,
             breakTimeDisplay: "5 : 00",
             compId: '',
-            timerFinished: false
+            timerFinished: false,
+            clockRunning: false,
+            interval: ''
         };
         this.calTimeLeft = this.calTimeLeft.bind(this);
         this.timeUpdate = this.timeUpdate.bind(this);
@@ -35,11 +37,13 @@ class Timer extends React.Component {
         // console.log(left)
         // this.setState({timeLeft: left})
         // console.log(this.state.timeLeft)
-        // this.interval = setInterval(() => this.timeUpdate(), 1000)
+        // le interval = setInterval(() => this.timeUpdate(), 1000)
+        // this.setState({interval: i})
     }
 
     timeUpdate(){
-        console.log(this.state.breakOn)
+        console.log("-1")
+        // console.log(this.state.breakOn)
         if (this.state.timerOn) {
             const newTime = this.state.timeLeft - 1000;
             if (newTime >= 0) {
@@ -47,19 +51,20 @@ class Timer extends React.Component {
                     timeLeft: newTime
                 });
             } else {
-                clearInterval(this.timeUpdate);
-                this.setState({ timerFinished: true });
+                clearInterval(this.state.interval);
+                this.setState({ timerFinished: true, clockRunning: false });
             }
             this.formatClock(this.state.timeLeft, false);
         } else if (this.state.breakOn) {
-            const newTime = this.state.timeLeft - 1000;
+            console.log("3")
+            const newTime = this.state.breakTimeLeft - 1000;
             if (newTime >= 0) {
                 this.setState({
                     breakTimeLeft: newTime
                 });
             } else {
-                clearInterval(this.timeUpdate);
-                this.setState({ breakOn: false });
+                clearInterval(this.state.interval);
+                this.setState({ breakOn: false, clockRunning: false });
             }
             this.formatClock(this.state.breakTimeLeft, true);
         }
@@ -79,14 +84,23 @@ class Timer extends React.Component {
 
     //handles and lifecycle
     finishedHandleClick(event) {
+        console.log("1")
         this.props.compCall(this.props.id);
-        this.setState({ timerOn: false, breakOn: true });
-        this.interval = setInterval(() => this.timeUpdate(), 1000);
+        if (!this.state.clockRunning) {
+            this.setState({ timerOn: false, breakOn: true, clockRunning: true });
+            let i = setInterval(() => this.timeUpdate(), 1000);
+            this.setState({interval: i})
+            console.log("!!!!!!!!!!!!!!!!")
+        }
     };
 
     notFinHandleClick(event) {
-        this.interval = setInterval(() => this.timeUpdate(), 1000);
-        this.setState({ timerOn: false, breakOn: true });
+        console.log("2")
+        if (!this.state.clockRunning) {
+            this.setState({ timerOn: false, breakOn: true, clockRunning: true });
+            let i = setInterval(() => this.timeUpdate(), 1000);
+            this.setState({interval: i})
+        }
     };
 
     componentDidMount() {
@@ -94,10 +108,11 @@ class Timer extends React.Component {
     };
 
     componentDidUpdate() {
-        if (!this.state.timerOn) {
+        if (!this.state.timerOn && !this.state.clockRunning) {
             if (this.props.timerOn) {
                 this.setState({timerOn: this.props.timerOn});
-                this.interval = setInterval(() => this.timeUpdate(), 1000)
+                let i = setInterval(() => this.timeUpdate(), 1000)
+                this.setState({interval: i})
             };
         };
     };
