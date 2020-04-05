@@ -14,8 +14,8 @@ class TaskList extends React.Component {
         this.tasklistTimerCall = this.tasklistTimerCall.bind(this);
     }
 
-    tasklistTimerCall(time){
-        this.props.timerCall(time)
+    tasklistTimerCall(t){
+        this.props.timerCall(t);
     }
 
     handleChange(event) {
@@ -25,7 +25,9 @@ class TaskList extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         let tasks = this.state.tasks;
+        let idNum = (tasks.length === 0) ? 1 : tasks[tasks.length -1].id + 1;
         let newTask = {
+            id: idNum,
             description: this.state.newDescription,
             status: "Ready"
         }
@@ -35,7 +37,13 @@ class TaskList extends React.Component {
 
     render() {
         const allTasks = this.state.tasks.map((item, index) =>
-            <Task description={item.description} status={item.status} key={index} timerCall2={this.tasklistTimerCall}/>
+            <Task 
+                description={item.description} 
+                status={item.status} 
+                key={item.id}
+                id={item.id} 
+                timerCall2={this.tasklistTimerCall}
+                compId={this.props.compId} />
         );
 
         return (
@@ -47,12 +55,12 @@ class TaskList extends React.Component {
                             <form onSubmit={this.handleSubmit}  >
                                 <div className="card-content white-text">
                                     <span className="card-title">Add New Task</span>
-                                    <div class="input-field">
+                                    <div className="input-field">
                                         <input 
                                             placeholder="description" 
                                             id="description" 
                                             type="text" 
-                                            class="validate"  
+                                            className="validate"  
                                             onChange={this.handleChange}
                                             value={this.state.newDescription}
                                         />
