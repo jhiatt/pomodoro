@@ -3,6 +3,11 @@
 2. Created a card/form to add new tasks
 3. 
 
+## Other notes
+Known issues: <br />
+1. A user can attampt to start a new task while the timer is running but the task will not start
+2. Timer.js has too many variables this needs to be cleaned up
+
 ## Tools used to create this app
 
 ### Create React App
@@ -29,6 +34,13 @@ https://reactjs.org/docs/lifting-state-up.html
 
 Run 'npm start' from terminal. <br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+## Ingest API tutorials
+
+https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+https://blog.hellojs.org/fetching-api-data-with-react-js-460fe8bbf8f2
+https://jasonwatmore.com/post/2020/02/01/react-fetch-http-post-request-examples
+https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch
 
 
 

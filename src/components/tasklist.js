@@ -26,13 +26,51 @@ class TaskList extends React.Component {
         event.preventDefault();
         let tasks = this.state.tasks;
         let idNum = (tasks.length === 0) ? 1 : tasks[tasks.length -1].id + 1;
-        let newTask = {
+        const newTask = {
             id: idNum,
             description: this.state.newDescription,
             status: "Ready"
         }
         this.setState({tasks: [...this.state.tasks, newTask ]});
-        this.setState({newDescription: ''});
+        this.setState({newDescription: ''}); //do we need to worry baout immutibility here?
+
+        async function postData(url = '', data = {}) {
+            const response = await fetch(url, {
+            method: 'POST', 
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer',
+            body: JSON.stringify(data)
+            });
+            return await response.json();
+        }
+        
+        let r = postData('http://localhost:3001/tasks', { task: newTask })
+            .then((data) => {
+            console.log(data);
+            });
+
+        console.log(r);
+    }
+
+    componentDidMount(){
+        fetch('http://localhost:3001/tasks.json')
+            .then((response) => {
+                return response.json();
+            })
+            .then((data) => {
+                // data.map((t) => 
+                //     console.log(Object.values(t._id))
+                //     )
+                data.map((t, index) => 
+                    this.setState({tasks: [...this.state.tasks, {description: t.description, status: t.status}]}),
+                )
+            });
     }
 
     render() {
@@ -45,7 +83,6 @@ class TaskList extends React.Component {
                 timerCall2={this.tasklistTimerCall}
                 compId={this.props.compId} />
         );
-        console.log("2: " + this.props.compId)
 
         return (
             <React.Fragment>

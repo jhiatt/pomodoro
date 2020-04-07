@@ -10,7 +10,7 @@ class Timer extends React.Component {
             timeLeft: .1 * 60000, //change from .1 to 25
             timeDisplay: "25 : 00",
             breakOn: false,
-            breakTimeLeft: 5 * 60000,
+            breakTimeLeft: .05 * 60000, //change to 5
             breakTimeDisplay: "5 : 00",
             compId: '',
             timerFinished: false,
@@ -50,7 +50,7 @@ class Timer extends React.Component {
                 });
             } else {
                 clearInterval(this.state.interval);
-                this.setState({ timerFinished: true, clockRunning: false });
+                this.setState({ timerFinished: true, clockRunning: false, timerOn: false });
             }
             this.formatClock(this.state.timeLeft, false);
         } else if (this.state.breakOn) {
@@ -61,7 +61,7 @@ class Timer extends React.Component {
                 });
             } else {
                 clearInterval(this.state.interval);
-                this.setState({ breakOn: false, clockRunning: false });
+                this.setState({ breakOn: false, clockRunning: false, timerOn: false, timerFinished: false });
             }
             this.formatClock(this.state.breakTimeLeft, true);
         }
@@ -85,7 +85,7 @@ class Timer extends React.Component {
         // change status
         if (!this.state.clockRunning) {
             this.props.compCall(this.props.eventId);
-            this.setState({ timerOn: false, breakOn: true, clockRunning: true });
+            this.setState({ timerOn: false, breakOn: true, clockRunning: true, timerFinished: false });
             let i = setInterval(() => this.timeUpdate(), 1000);
             this.setState({interval: i})
         }
@@ -93,7 +93,7 @@ class Timer extends React.Component {
 
     notFinHandleClick(event) {
         if (!this.state.clockRunning) {
-            this.setState({ timerOn: false, breakOn: true, clockRunning: true });
+            this.setState({ timerOn: false, breakOn: true, clockRunning: true, timerFinished: false });
             let i = setInterval(() => this.timeUpdate(), 1000);
             this.setState({interval: i})
         }
