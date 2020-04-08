@@ -5,8 +5,8 @@ class Timer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            timerOn: this.props.timerOn, //should be false?
-            timerStart: 0,
+            timerOn: false,
+            startTime: 0,
             timeLeft: .1 * 60000, //change from .1 to 25
             timeDisplay: "25 : 00",
             breakOn: false,
@@ -30,8 +30,8 @@ class Timer extends React.Component {
         console.log(totalTime)
         let now = Date.now();
         console.log((now))
-        console.log("Timer Start: " + this.state.timerStart)
-        let end = this.state.timerStart + totalTime
+        console.log("Timer Start: " + this.state.startTime)
+        let end = this.state.startTime + totalTime
         let left = end - now
         console.log("left: " + left)
         this.setState({timeLeft: left, timerOn: true, clockRunning: true})
@@ -42,6 +42,7 @@ class Timer extends React.Component {
 
     timeUpdate(){
         if (this.state.timerOn) {
+            console.log("!!!!")
             const newTime = this.state.timeLeft - 1000;
             if (newTime >= 0) {
                 this.setState({
@@ -53,6 +54,7 @@ class Timer extends React.Component {
             }
             this.formatClock(this.state.timeLeft, false);
         } else if (this.state.breakOn) {
+            console.log("!!!!!")
             const newTime = this.state.breakTimeLeft - 1000;
             if (newTime >= 0) {
                 this.setState({
@@ -80,7 +82,6 @@ class Timer extends React.Component {
 
     //handles and lifecycle
     finishedHandleClick(event) {
-        // change status
         if (!this.state.clockRunning) {
             this.props.compCall(this.props.eventId);
             this.setState({ timerOn: false, breakOn: true, clockRunning: true, timerFinished: false });
@@ -123,19 +124,23 @@ class Timer extends React.Component {
             })
             .then((data) => {
                 data.map((t, index) => 
-                    this.setState({curTask: t.current_task, timerStart: parseInt(t.started)})
+                    this.setState({curTask: t.description, startTime: parseInt(t.started)})
             )
-            // This is not running at the right time
-            if (this.state.timerStart + 25 * 60000 > Date.now()) {this.calTimeLeft(25)}
+            if (this.state.startTime + 25 * 60000 > Date.now()) {this.calTimeLeft(25)}
         });
     };
 
     componentDidUpdate() {
-        if (!this.state.timerOn && !this.state.clockRunning) {
-            if (this.props.timerOn) {
-                this.setState({timerOn: this.props.timerOn});
-                let i = setInterval(() => this.timeUpdate(), 1000)
-                this.setState({interval: i})
+        if (this.props.startTime > this.state.startTime) {
+            this.setState({startTime: this.props.startTime,})
+            if (this.state.startTime + 25 * 60000 > Date.now() 
+                && !this.state.clockRunning 
+                && this.state.interval == null ||  this.state.interval == "") {
+
+                console.log("!!!")
+                this.setState({timerOn: true, clockRunning: true, curTask: this.props.description});
+                let i = setInterval(() => this.timeUpdate(), 1000);
+                this.setState({interval: i});
             };
         };
     };
@@ -163,13 +168,13 @@ class Timer extends React.Component {
         }
 
         let main
-        if (this.state.timerOn || this.state.breakOn) {
+        if (this.state.timerOn || this.state.breakOn || this.state.timerFinished) {
             main = 
                 <div className="row">
                     <div className="col s12 m6">
                         <div id="timer" className="card blue-grey lighten-3">
                             <div className="card-content grey-text text-darken-4">
-                                <span className="card-title">Current Task: {this.props.description}</span>
+                                <span className="card-title">Current Task: {this.state.curTask}</span>
                                 {question}
                                 {timer}
                             </div>

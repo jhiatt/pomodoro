@@ -11,7 +11,9 @@ class Task extends React.Component {
     }
 
     handleClick(event) {
-        let t = this.props;
+        let p = this.props;
+        let q = {time: Date.now()};
+        let t = Object.assign(q, p)
         this.props.timerCall2(t);
         this.setState({status: "In Progress" })
 
@@ -37,7 +39,7 @@ class Task extends React.Component {
         
         let curId = this.props.id.toString()
         console.log(curId)
-        putData(`http://localhost:3001/users/5e8d31ad6ea1e21e3c28a34a`, { current_task: curId, started: Date.now() })
+        putData(`http://localhost:3001/users/5e8d31ad6ea1e21e3c28a34a`, { current_task: curId, description: this.props.description, started: Date.now() })
             .then((data) => {
         });
     }
@@ -47,6 +49,7 @@ class Task extends React.Component {
             this.setState({status: "Complete"})
         }
     }
+    
 
     render() {
         let button

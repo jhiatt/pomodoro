@@ -41,9 +41,11 @@ Timer is kept seperate from the others for ease of future development.  If down 
 
 This does mean that a series of call backs were needed to bring state change data up to App.js and back down through various components, which took more time particularly in error checking.
 
+API calls were called at the component level, in a production app we would likely centralize these.
+
 ## Other notes
 Known issues: <br />
-1. A user can attampt to start a new task while the timer is running but the task will not start, these buttons should be disabled in react when the timer is running.  Will require another callback.
+1. Clicking start while a timer is already running will change the name of the task that is running.  These buttons should be disabled in react when the timer is running.  Will require another callback.
 2. Timer.js has too many variables this needs to be cleaned up
 3. Currently you can create cards but you cannot delete them in the current UI.
 4. I've set this up so that the timer is running when you leave the page.  I did not implement this logic for the break timer with the assumption that if you left the page you probably took a break.
