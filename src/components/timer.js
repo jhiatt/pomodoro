@@ -7,10 +7,10 @@ class Timer extends React.Component {
         this.state = {
             timerOn: false,
             startTime: 0,
-            timeLeft: .1 * 60000, //change from .1 to 25
+            timeLeft: 25 * 60000,
             timeDisplay: "25 : 00",
             breakOn: false,
-            breakTimeLeft: .5 * 60000, //change to 5
+            breakTimeLeft: 5 * 60000,
             breakTimeDisplay: "5 : 00",
             compId: '',
             timerFinished: false,
@@ -27,22 +27,16 @@ class Timer extends React.Component {
 
     calTimeLeft(totalMin){
         let totalTime = totalMin * (60000)
-        console.log(totalTime)
         let now = Date.now();
-        console.log((now))
-        console.log("Timer Start: " + this.state.startTime)
         let end = this.state.startTime + totalTime
         let left = end - now
-        console.log("left: " + left)
         this.setState({timeLeft: left, timerOn: true, clockRunning: true})
-        console.log(this.state.timeLeft)
         let i = setInterval(() => this.timeUpdate(), 1000)
         this.setState({interval: i})
     }
 
     timeUpdate(){
         if (this.state.timerOn) {
-            console.log("!!!!")
             const newTime = this.state.timeLeft - 1000;
             if (newTime >= 0) {
                 this.setState({
@@ -54,7 +48,6 @@ class Timer extends React.Component {
             }
             this.formatClock(this.state.timeLeft, false);
         } else if (this.state.breakOn) {
-            console.log("!!!!!")
             const newTime = this.state.breakTimeLeft - 1000;
             if (newTime >= 0) {
                 this.setState({
@@ -137,7 +130,6 @@ class Timer extends React.Component {
                 && !this.state.clockRunning 
                 && this.state.interval == null ||  this.state.interval == "") {
 
-                console.log("!!!")
                 this.setState({timerOn: true, clockRunning: true, curTask: this.props.description});
                 let i = setInterval(() => this.timeUpdate(), 1000);
                 this.setState({interval: i});

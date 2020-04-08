@@ -10,7 +10,6 @@ class App extends React.Component {
     this.state = {
       eventId: '',
       description: '',
-      // timerOn: false,
       completedId: '',
       startTime: 0
     }
@@ -23,12 +22,10 @@ class App extends React.Component {
   timerCallback = (t) => {
     this.setState({eventId: t.id });
     this.setState({description: t.description});
-    // this.setState({timerOn: true});
     this.setState({startTime: t.time});
   };
 
   completeCallback = (t) => {
-    console.log("1: " + t)
     this.setState({completedId: t});
   }
 

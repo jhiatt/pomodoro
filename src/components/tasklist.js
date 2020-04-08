@@ -32,7 +32,7 @@ class TaskList extends React.Component {
             status: "Ready"
         }
         this.setState({tasks: [...this.state.tasks, newTask ]});
-        this.setState({newDescription: ''}); //do we need to worry baout immutibility here?
+        this.setState({newDescription: ''}); 
 
         async function postData(url = '', data = {}) {
             const response = await fetch(url, {

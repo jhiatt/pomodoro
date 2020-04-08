@@ -38,7 +38,6 @@ class Task extends React.Component {
         });
         
         let curId = this.props.id.toString()
-        console.log(curId)
         putData(`http://localhost:3001/users/5e8d31ad6ea1e21e3c28a34a`, { current_task: curId, description: this.props.description, started: Date.now() })
             .then((data) => {
         });
