@@ -25,7 +25,6 @@ class TaskList extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        // let idNum = (tasks.length === 0) ? 1 : tasks[tasks.length -1].id + 1;
         let idNum = ObjectID.generate()
         const newTask = {
             id: idNum,
@@ -53,9 +52,7 @@ class TaskList extends React.Component {
         
         postData('http://localhost:3001/tasks', { task: newTask })
             .then((data) => {
-            // console.log(data);
             });
-            // var ObjectID = require("bson-objectid")
     }
 
     componentDidMount(){
@@ -64,9 +61,6 @@ class TaskList extends React.Component {
                 return response.json();
             })
             .then((data) => {
-                // data.map((t) => 
-                //     console.log(Object.values(t._id))
-                //     )
                 data.map((t, index) => 
                     this.setState({tasks: [...this.state.tasks, {id: Object.values(t._id), description: t.description, status: t.status}]}),
                 )

@@ -7,10 +7,10 @@ class Timer extends React.Component {
         this.state = {
             timerOn: this.props.timerOn, //should be false?
             timerStart: 0,
-            timeLeft: 25 * 60000, //change from .1 to 25
+            timeLeft: .1 * 60000, //change from .1 to 25
             timeDisplay: "25 : 00",
             breakOn: false,
-            breakTimeLeft: 5 * 60000, //change to 5
+            breakTimeLeft: .5 * 60000, //change to 5
             breakTimeDisplay: "5 : 00",
             compId: '',
             timerFinished: false,
@@ -30,7 +30,7 @@ class Timer extends React.Component {
         console.log(totalTime)
         let now = Date.now();
         console.log((now))
-        console.log("Timer Start: " + this.state.timerStart) //WHY IS THIS 0??
+        console.log("Timer Start: " + this.state.timerStart)
         let end = this.state.timerStart + totalTime
         let left = end - now
         console.log("left: " + left)
@@ -69,7 +69,7 @@ class Timer extends React.Component {
     formatClock(time, isBreak) {
         let realTime = time / 1000;
         let minutes = Math.floor(realTime / 60);
-        let seconds = realTime - minutes * 60;
+        let seconds = Math.floor(realTime - minutes * 60);
         seconds = seconds < 10 ? "0" + seconds : seconds;
         if (isBreak) {
             this.setState({breakTimeDisplay: `${minutes} : ${seconds}`})
@@ -124,9 +124,10 @@ class Timer extends React.Component {
             .then((data) => {
                 data.map((t, index) => 
                     this.setState({curTask: t.current_task, timerStart: parseInt(t.started)})
-            )});
+            )
             // This is not running at the right time
             if (this.state.timerStart + 25 * 60000 > Date.now()) {this.calTimeLeft(25)}
+        });
     };
 
     componentDidUpdate() {
