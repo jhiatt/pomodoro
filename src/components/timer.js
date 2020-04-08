@@ -7,15 +7,16 @@ class Timer extends React.Component {
         this.state = {
             timerOn: this.props.timerOn, //should be false?
             timerStart: 0,
-            timeLeft: .1 * 60000, //change from .1 to 25
+            timeLeft: 25 * 60000, //change from .1 to 25
             timeDisplay: "25 : 00",
             breakOn: false,
-            breakTimeLeft: .05 * 60000, //change to 5
+            breakTimeLeft: 5 * 60000, //change to 5
             breakTimeDisplay: "5 : 00",
             compId: '',
             timerFinished: false,
             clockRunning: false,
-            interval: ''
+            interval: '',
+            curTask: ''
         };
         this.calTimeLeft = this.calTimeLeft.bind(this);
         this.timeUpdate = this.timeUpdate.bind(this);
@@ -25,20 +26,18 @@ class Timer extends React.Component {
     }
 
     calTimeLeft(totalMin){
-        // let totalTime = totalMin * (60000)
-        // console.log("!!!!!!!!!!!!!!!!!!!!!")
-        // console.log(totalTime)
-        // let now = Date.now();
-        // console.log((now))
-        // console.log(this.state.timerStart)
-        // let passed = now - this.state.timerStart;
-        // console.log(passed)
-        // let left = totalTime - passed;
-        // console.log(left)
-        // this.setState({timeLeft: left})
-        // console.log(this.state.timeLeft)
-        // le interval = setInterval(() => this.timeUpdate(), 1000)
-        // this.setState({interval: i})
+        let totalTime = totalMin * (60000)
+        console.log(totalTime)
+        let now = Date.now();
+        console.log((now))
+        console.log("Timer Start: " + this.state.timerStart) //WHY IS THIS 0??
+        let end = this.state.timerStart + totalTime
+        let left = end - now
+        console.log("left: " + left)
+        this.setState({timeLeft: left, timerOn: true, clockRunning: true})
+        console.log(this.state.timeLeft)
+        let i = setInterval(() => this.timeUpdate(), 1000)
+        this.setState({interval: i})
     }
 
     timeUpdate(){
@@ -81,7 +80,6 @@ class Timer extends React.Component {
 
     //handles and lifecycle
     finishedHandleClick(event) {
-        // console.log("0: " + this.props.eventId)
         // change status
         if (!this.state.clockRunning) {
             this.props.compCall(this.props.eventId);
@@ -89,6 +87,25 @@ class Timer extends React.Component {
             let i = setInterval(() => this.timeUpdate(), 1000);
             this.setState({interval: i})
         }
+        async function postData(url = '', data = {}) {
+            const response = await fetch(url, {
+            method: 'PUT', 
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer',
+            body: JSON.stringify(data)
+            });
+            return await response.json();
+        }
+        
+        postData(`http://localhost:3001/tasks/${this.props.eventId}`, { status: "Complete" })
+            .then((data) => {
+            });
     };
 
     notFinHandleClick(event) {
@@ -100,7 +117,16 @@ class Timer extends React.Component {
     };
 
     componentDidMount() {
-        this.calTimeLeft(25);
+        fetch('http://localhost:3001/users')
+            .then((response) => {
+                return response.json();
+            })
+            .then((data) => {
+                data.map((t, index) => 
+                    this.setState({curTask: t.current_task, timerStart: parseInt(t.started)})
+            )});
+            // This is not running at the right time
+            if (this.state.timerStart + 25 * 60000 > Date.now()) {this.calTimeLeft(25)}
     };
 
     componentDidUpdate() {

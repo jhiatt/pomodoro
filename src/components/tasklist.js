@@ -1,5 +1,6 @@
 import React from 'react';
 import Task from './task';
+import ObjectID from 'bson-objectid';
 
 class TaskList extends React.Component {
     constructor(props) {
@@ -24,8 +25,8 @@ class TaskList extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        let tasks = this.state.tasks;
-        let idNum = (tasks.length === 0) ? 1 : tasks[tasks.length -1].id + 1;
+        // let idNum = (tasks.length === 0) ? 1 : tasks[tasks.length -1].id + 1;
+        let idNum = ObjectID.generate()
         const newTask = {
             id: idNum,
             description: this.state.newDescription,
@@ -50,12 +51,11 @@ class TaskList extends React.Component {
             return await response.json();
         }
         
-        let r = postData('http://localhost:3001/tasks', { task: newTask })
+        postData('http://localhost:3001/tasks', { task: newTask })
             .then((data) => {
-            console.log(data);
+            // console.log(data);
             });
-
-        console.log(r);
+            // var ObjectID = require("bson-objectid")
     }
 
     componentDidMount(){
@@ -68,7 +68,7 @@ class TaskList extends React.Component {
                 //     console.log(Object.values(t._id))
                 //     )
                 data.map((t, index) => 
-                    this.setState({tasks: [...this.state.tasks, {description: t.description, status: t.status}]}),
+                    this.setState({tasks: [...this.state.tasks, {id: Object.values(t._id), description: t.description, status: t.status}]}),
                 )
             });
     }

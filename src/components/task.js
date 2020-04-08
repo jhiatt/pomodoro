@@ -14,7 +14,32 @@ class Task extends React.Component {
         let t = this.props;
         this.props.timerCall2(t);
         this.setState({status: "In Progress" })
-        //API change status
+
+        async function putData(url = '', data = {}) {
+            const response = await fetch(url, {
+            method: 'PUT', 
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer',
+            body: JSON.stringify(data)
+            });
+            return await response.json();
+        }
+        
+        putData(`http://localhost:3001/tasks/${this.props.id}`, { status: "In Progress" })
+            .then((data) => {
+        });
+        
+        let curId = this.props.id.toString()
+        console.log(curId)
+        putData(`http://localhost:3001/users/5e8d31ad6ea1e21e3c28a34a`, { current_task: curId, started: Date.now() })
+            .then((data) => {
+        });
     }
 
     componentDidUpdate() {
@@ -26,6 +51,8 @@ class Task extends React.Component {
     render() {
         let button
         if (this.props.status !== "Complete") {
+            // we can add a condition here so that if timer is started we also hide this button
+            // we should add a delete button here
             button = 
                 <div className="card-action">
                     <div className="waves-effect waves-light btn" onClick={this.handleClick}>Start</div>

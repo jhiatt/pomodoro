@@ -1,3 +1,6 @@
+## Getting Started
+In the rails console, create a user and copy the user id into the relevant api calls
+
 ## Steps taken to create this app
 1. Created sample card to hold tasks
 2. Created a card/form to add new tasks
