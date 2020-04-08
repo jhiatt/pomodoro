@@ -10,8 +10,8 @@ class App extends React.Component {
     this.state = {
       eventId: '',
       description: '',
-      timerOn: false,
-      completedId: ''
+      completedId: '',
+      startTime: 0
     }
     this.timerCallback = this.timerCallback.bind(this);
     this.completeCallback = this.completeCallback.bind(this);
@@ -22,11 +22,10 @@ class App extends React.Component {
   timerCallback = (t) => {
     this.setState({eventId: t.id });
     this.setState({description: t.description});
-    this.setState({timerOn: true});
+    this.setState({startTime: t.time});
   };
 
   completeCallback = (t) => {
-    console.log("1: " + t)
     this.setState({completedId: t});
   }
 
@@ -35,7 +34,7 @@ class App extends React.Component {
     return (
     <div className="App">
       <header className="App-header">
-        <Timer eventId={this.state.eventId} description={this.state.description} timerOn={this.state.timerOn} compCall={this.completeCallback} />
+        <Timer eventId={this.state.eventId} description={this.state.description} startTime={this.state.startTime} compCall={this.completeCallback} />
         <TaskList timerCall={this.timerCallback} compId={this.state.completedId} />
       </header>
     </div>
